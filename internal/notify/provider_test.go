@@ -146,6 +146,17 @@ func TestProvidersDeliver(t *testing.T) {
 			},
 		},
 		{
+			channelType: "googlechat",
+			config:      cfg(`{"webhook_url":"https://chat.googleapis.com/v1/spaces/X/messages?key=k&token=t"}`),
+			check: func(t *testing.T, got sent) {
+				body := decodeBody(t, got.body)
+				text, ok := body["text"].(string)
+				if !ok || !strings.Contains(text, `[DOWN] API "edge"`) {
+					t.Errorf("text = %v", body["text"])
+				}
+			},
+		},
+		{
 			channelType: "telegram",
 			config:      cfg(`{"bot_token":"123:abc","chat_id":"-100","parse_mode":"HTML"}`),
 			check: func(t *testing.T, got sent) {

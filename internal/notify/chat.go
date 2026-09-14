@@ -198,3 +198,19 @@ func sendMatrix(ctx context.Context, s *Sender, c conf, ev Event) (Receipt, erro
 		verifyTLS:   true,
 	})
 }
+
+func sendGoogleChat(ctx context.Context, s *Sender, c conf, ev Event) (Receipt, error) {
+	text, err := message(c, "message_template", ev)
+	if err != nil {
+		return Receipt{}, err
+	}
+
+	payload := map[string]any{
+		"text": Title(ev) + "\n\n" + text,
+	}
+	body, err := json.Marshal(payload)
+	if err != nil {
+		return Receipt{}, err
+	}
+	return s.postJSON(ctx, c.str("webhook_url", ""), body, nil)
+}

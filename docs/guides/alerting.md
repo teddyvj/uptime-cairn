@@ -132,6 +132,10 @@ instance. `priority` (1–5), `tags`, and an `auth_type` of `none`, `basic`
 
 `webhook_url` (encrypted) and an optional `message_template`.
 
+### Google Chat
+
+`webhook_url` (encrypted) and an optional `message_template`.
+
 ### PagerDuty
 
 `integration_key` (encrypted), `severity` (`critical`, `error`, `warning`,

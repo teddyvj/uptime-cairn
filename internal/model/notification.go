@@ -12,19 +12,20 @@ import (
 // opts into, buying roughly ninety more destinations for the cost of shelling
 // out to a binary (PHASE-1-PLAN.md §3.3).
 const (
-	ChannelEmail     = "email"
-	ChannelWebhook   = "webhook"
-	ChannelSlack     = "slack"
-	ChannelDiscord   = "discord"
-	ChannelTelegram  = "telegram"
-	ChannelMatrix    = "matrix"
-	ChannelGotify    = "gotify"
-	ChannelNtfy      = "ntfy"
-	ChannelMSTeams   = "msteams"
-	ChannelPagerDuty = "pagerduty"
-	ChannelOpsgenie  = "opsgenie"
-	ChannelTwilio    = "twilio"
-	ChannelApprise   = "apprise"
+	ChannelEmail      = "email"
+	ChannelWebhook    = "webhook"
+	ChannelSlack      = "slack"
+	ChannelDiscord    = "discord"
+	ChannelTelegram   = "telegram"
+	ChannelMatrix     = "matrix"
+	ChannelGotify     = "gotify"
+	ChannelNtfy       = "ntfy"
+	ChannelMSTeams    = "msteams"
+	ChannelPagerDuty  = "pagerduty"
+	ChannelOpsgenie   = "opsgenie"
+	ChannelTwilio     = "twilio"
+	ChannelApprise    = "apprise"
+	ChannelGoogleChat = "googlechat"
 )
 
 // EventType values, matching EventType in the spec. Only the monitor lifecycle

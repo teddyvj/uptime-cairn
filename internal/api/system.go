@@ -41,8 +41,8 @@ func (s *Server) getSystemInfo(w http.ResponseWriter, r *http.Request) {
 			model.ChannelEmail, model.ChannelWebhook, model.ChannelSlack,
 			model.ChannelDiscord, model.ChannelTelegram, model.ChannelMatrix,
 			model.ChannelGotify, model.ChannelNtfy, model.ChannelMSTeams,
-			model.ChannelPagerDuty, model.ChannelOpsgenie, model.ChannelTwilio,
-			model.ChannelApprise,
+			model.ChannelGoogleChat, model.ChannelPagerDuty, model.ChannelOpsgenie,
+			model.ChannelTwilio, model.ChannelApprise,
 		},
 		Capabilities: s.capabilities(r),
 	}

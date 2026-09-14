@@ -104,19 +104,20 @@ func (s *Sender) AppriseAvailable() bool { return s.apprisePath != "" }
 type sendFunc func(context.Context, *Sender, conf, Event) (Receipt, error)
 
 var senders = map[string]sendFunc{
-	"email":     sendEmail,
-	"webhook":   sendWebhook,
-	"slack":     sendSlack,
-	"discord":   sendDiscord,
-	"telegram":  sendTelegram,
-	"matrix":    sendMatrix,
-	"gotify":    sendGotify,
-	"ntfy":      sendNtfy,
-	"msteams":   sendMSTeams,
-	"pagerduty": sendPagerDuty,
-	"opsgenie":  sendOpsgenie,
-	"twilio":    sendTwilio,
-	"apprise":   sendApprise,
+	"email":      sendEmail,
+	"webhook":    sendWebhook,
+	"slack":      sendSlack,
+	"discord":    sendDiscord,
+	"telegram":   sendTelegram,
+	"matrix":     sendMatrix,
+	"gotify":     sendGotify,
+	"ntfy":       sendNtfy,
+	"msteams":    sendMSTeams,
+	"googlechat": sendGoogleChat,
+	"pagerduty":  sendPagerDuty,
+	"opsgenie":   sendOpsgenie,
+	"twilio":     sendTwilio,
+	"apprise":    sendApprise,
 }
 
 // Send delivers one event through one channel's merged configuration.

@@ -5203,6 +5203,7 @@ components:
         - gotify
         - ntfy
         - msteams
+        - googlechat
         - pagerduty
         - opsgenie
         - twilio
@@ -5280,6 +5281,7 @@ components:
           gotify: "#/components/schemas/GotifyChannel"
           ntfy: "#/components/schemas/NtfyChannel"
           msteams: "#/components/schemas/MsTeamsChannel"
+          googlechat: "#/components/schemas/GoogleChatChannel"
           pagerduty: "#/components/schemas/PagerDutyChannel"
           opsgenie: "#/components/schemas/OpsgenieChannel"
           twilio: "#/components/schemas/TwilioChannel"
@@ -5477,6 +5479,20 @@ components:
           required: [name, type, config]
           properties:
             type: { type: string, const: msteams }
+            config:
+              type: object
+              required: [webhook_url]
+              properties:
+                webhook_url: { type: string, format: uri, writeOnly: true }
+                message_template: { type: [string, "null"] }
+
+    GoogleChatChannel:
+      allOf:
+        - $ref: "#/components/schemas/NotificationChannelCommon"
+        - type: object
+          required: [name, type, config]
+          properties:
+            type: { type: string, const: googlechat }
             config:
               type: object
               required: [webhook_url]
