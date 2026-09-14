@@ -252,6 +252,34 @@ func TestProvidersDeliver(t *testing.T) {
 			},
 		},
 		{
+			channelType: "pushover",
+			config:      cfg(`{"api_token":"tok123","user_key":"usr456","priority":1}`),
+			check: func(t *testing.T, got sent) {
+				form, err := url.ParseQuery(got.body)
+				if err != nil {
+					t.Fatal(err)
+				}
+				// Credentials must be in the form body, not the query string
+				// (a query string appears in server access logs).
+				if got.query.Get("token") != "" {
+					t.Error("api_token leaked into query string")
+				}
+				if form.Get("token") != "tok123" {
+					t.Errorf("token = %q, want tok123", form.Get("token"))
+				}
+				if form.Get("user") != "usr456" {
+					t.Errorf("user = %q, want usr456", form.Get("user"))
+				}
+				if form.Get("priority") != "1" {
+					t.Errorf("priority = %q, want 1", form.Get("priority"))
+				}
+				// Message must be present; title comes from the event.
+				if form.Get("message") == "" {
+					t.Error("message is empty")
+				}
+			},
+		},
+		{
 			channelType: "webhook",
 			config:      cfg(`{"url":"https://example.com/hook","headers":{"X-Monitor":"{{monitor.name}}"}}`),
 			check: func(t *testing.T, got sent) {

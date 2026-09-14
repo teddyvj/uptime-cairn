@@ -128,6 +128,15 @@ generates.
 instance. `priority` (1–5), `tags`, and an `auth_type` of `none`, `basic`
 (`username`/`password`), or `token`.
 
+### Pushover
+
+`api_token` (encrypted) and `user_key` (encrypted) are both required.
+Register an application at [pushover.net](https://pushover.net) to obtain
+the token; the user key is on your Pushover account dashboard.
+
+Optional: `priority` (-2 to 2, default 0), `sound` (any Pushover sound name),
+`device` (to target a specific device rather than all your devices).
+
 ### Microsoft Teams
 
 `webhook_url` (encrypted) and an optional `message_template`.

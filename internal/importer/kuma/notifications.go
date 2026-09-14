@@ -74,6 +74,8 @@ func mapNotification(raw string) (mappedChannel, error) {
 		return mapTwilio(cfg)
 	case "apprise":
 		return mapApprise(cfg)
+	case "pushover":
+		return mapPushover(cfg)
 	default:
 		return mappedChannel{}, &unsupportedProvider{provider: provider}
 	}
@@ -330,4 +332,17 @@ func splitMailbox(raw string) (name, address string) {
 		return "", strings.TrimSpace(raw)
 	}
 	return strings.Trim(strings.TrimSpace(raw[:open]), `"`), strings.TrimSpace(raw[open+1 : closing])
+}
+
+func mapPushover(cfg map[string]any) (mappedChannel, error) {
+	token := pick(cfg, "pushoverApiToken", "pushoverAPIToken")
+	userKey := pick(cfg, "pushoverUserKey", "pushoverUser")
+	if token == "" || userKey == "" {
+		return mappedChannel{}, fmt.Errorf("pushover notification is missing api_token or user_key")
+	}
+	out := map[string]any{
+		"api_token": token,
+		"user_key":  userKey,
+	}
+	return mappedChannel{Type: "pushover", Config: out}, nil
 }

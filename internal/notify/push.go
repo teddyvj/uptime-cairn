@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -78,5 +80,49 @@ func sendNtfy(ctx context.Context, s *Sender, c conf, ev Event) (Receipt, error)
 		body:        body,
 		headers:     headers,
 		verifyTLS:   true,
+	})
+}
+
+// sendPushover delivers a notification through Pushover's API
+// (https://pushover.net/api). It posts an application token and a user key
+// which together authenticate and route the message — the same pair that
+// identifies both sender and recipient.
+//
+// Pushover's endpoint is https://api.pushover.net/1/messages.json. The
+// body is form-encoded, not JSON, matching their documented format.
+func sendPushover(ctx context.Context, s *Sender, c conf, ev Event) (Receipt, error) {
+	text, err := message(c, "message_template", ev)
+	if err != nil {
+		return Receipt{}, err
+	}
+
+	form := url.Values{}
+	form.Set("token", c.str("api_token", ""))
+	form.Set("user", c.str("user_key", ""))
+	form.Set("title", truncate(Title(ev), 250))
+	form.Set("message", text)
+
+	// priority ranges from -2 (lowest) to 2 (emergency). 0 is the neutral
+	// default. The field is omitted when the user has not configured it, but
+	// explicitly included when set so the value is not silently ignored.
+	if p := c.num("priority", 0); p != 0 {
+		form.Set("priority", strconv.Itoa(int(p)))
+	}
+	if sound := c.str("sound", ""); sound != "" {
+		form.Set("sound", sound)
+	}
+	if device := c.str("device", ""); device != "" {
+		form.Set("device", device)
+	}
+
+	encoded := []byte(form.Encode())
+	return s.do(ctx, request{
+		url:         "https://api.pushover.net/1/messages.json",
+		contentType: "application/x-www-form-urlencoded",
+		body:        encoded,
+		verifyTLS:   true,
+		// The form body contains the api_token and user_key; record only the
+		// rendered message so credentials do not appear in the delivery log.
+		record: text,
 	})
 }

@@ -128,6 +128,17 @@ var schemas = map[string][]field{
 		{name: "token", kind: kString, secret: true, redact: true},
 		{name: "message_template", kind: kString, template: true},
 	},
+	"pushover": {
+		{name: "api_token", kind: kString, required: true, secret: true, redact: true},
+		{name: "user_key", kind: kString, required: true, secret: true, redact: true},
+		// priority ranges from -2 (lowest / no notification) to 2 (emergency /
+		// requires acknowledgement). 0 is the neutral default and is sent only
+		// when explicitly set so the API's own default is not overridden silently.
+		{name: "priority", kind: kInt, min: -2, max: 2},
+		{name: "sound", kind: kString},
+		{name: "device", kind: kString},
+		{name: "message_template", kind: kString, template: true},
+	},
 	"msteams": {
 		{name: "webhook_url", kind: kString, required: true, format: "uri", secret: true, redact: true},
 		{name: "message_template", kind: kString, template: true},

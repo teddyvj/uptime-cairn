@@ -35,8 +35,8 @@ func TestEveryChannelTypeHasSchemaAndProvider(t *testing.T) {
 			t.Errorf("%s has no provider: a channel of this type would validate and deliver nothing", channelType)
 		}
 	}
-	if len(Types()) != 13 {
-		t.Errorf("%d channel types, spec defines 13", len(Types()))
+	if len(Types()) != 14 {
+		t.Errorf("%d channel types, spec defines 14", len(Types()))
 	}
 }
 
@@ -50,6 +50,7 @@ func TestValidateAcceptsAWellFormedChannel(t *testing.T) {
 		"matrix":    `{"homeserver_url":"https://matrix.example.com","room_id":"!abc:example.com","access_token":"tok"}`,
 		"gotify":    `{"server_url":"https://gotify.example.com","application_token":"tok","priority":8}`,
 		"ntfy":      `{"topic":"alerts","priority":4}`,
+		"pushover":  `{"api_token":"aTokenXXX","user_key":"aUserKeyXXX"}`,
 		"msteams":   `{"webhook_url":"https://outlook.office.com/webhook/x"}`,
 		"pagerduty": `{"integration_key":"key","severity":"critical"}`,
 		"opsgenie":  `{"api_key":"key","responders":[{"type":"team","value":"platform"}]}`,
