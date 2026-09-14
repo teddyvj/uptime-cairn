@@ -132,6 +132,12 @@ instance. `priority` (1–5), `tags`, and an `auth_type` of `none`, `basic`
 
 `webhook_url` (encrypted) and an optional `message_template`.
 
+### Mattermost
+
+`webhook_url` (encrypted), with optional `channel` (channel name override, e.g.
+`town-square`), `username`, `icon_url`, and `message_template`. Notifications
+render with colour-coded attachments indicating status (`up`, `down`, `pending`).
+
 ### PagerDuty
 
 `integration_key` (encrypted), `severity` (`critical`, `error`, `warning`,

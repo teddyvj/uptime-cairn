@@ -203,6 +203,17 @@ export const CHANNEL_TYPES: Record<string, ChannelSpec> = {
 			messageTemplate
 		]
 	},
+	mattermost: {
+		label: 'Mattermost',
+		summary: 'Post to an incoming webhook.',
+		fields: [
+			{ key: 'webhook_url', label: 'Webhook URL', kind: 'secret', required: true, secret: true },
+			{ key: 'channel', label: 'Channel', kind: 'text', hint: 'Optional channel name override (e.g. town-square).' },
+			{ key: 'username', label: 'Username', kind: 'text', hint: 'Optional username override.' },
+			{ key: 'icon_url', label: 'Icon URL', kind: 'url', hint: 'Optional icon image URL.' },
+			messageTemplate
+		]
+	},
 	pagerduty: {
 		label: 'PagerDuty',
 		summary: 'Open and resolve incidents. A recovery closes the alert the failure opened.',
