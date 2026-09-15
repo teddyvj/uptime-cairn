@@ -5203,6 +5203,7 @@ components:
         - gotify
         - ntfy
         - msteams
+        - mattermost
         - pagerduty
         - opsgenie
         - twilio
@@ -5264,6 +5265,7 @@ components:
         - $ref: "#/components/schemas/GotifyChannel"
         - $ref: "#/components/schemas/NtfyChannel"
         - $ref: "#/components/schemas/MsTeamsChannel"
+        - $ref: "#/components/schemas/MattermostChannel"
         - $ref: "#/components/schemas/PagerDutyChannel"
         - $ref: "#/components/schemas/OpsgenieChannel"
         - $ref: "#/components/schemas/TwilioChannel"
@@ -5280,6 +5282,7 @@ components:
           gotify: "#/components/schemas/GotifyChannel"
           ntfy: "#/components/schemas/NtfyChannel"
           msteams: "#/components/schemas/MsTeamsChannel"
+          mattermost: "#/components/schemas/MattermostChannel"
           pagerduty: "#/components/schemas/PagerDutyChannel"
           opsgenie: "#/components/schemas/OpsgenieChannel"
           twilio: "#/components/schemas/TwilioChannel"
@@ -5482,6 +5485,23 @@ components:
               required: [webhook_url]
               properties:
                 webhook_url: { type: string, format: uri, writeOnly: true }
+                message_template: { type: [string, "null"] }
+
+    MattermostChannel:
+      allOf:
+        - $ref: "#/components/schemas/NotificationChannelCommon"
+        - type: object
+          required: [name, type, config]
+          properties:
+            type: { type: string, const: mattermost }
+            config:
+              type: object
+              required: [webhook_url]
+              properties:
+                webhook_url: { type: string, format: uri, writeOnly: true }
+                channel: { type: [string, "null"] }
+                username: { type: [string, "null"] }
+                icon_url: { type: [string, "null"], format: uri }
                 message_template: { type: [string, "null"] }
 
     PagerDutyChannel:
