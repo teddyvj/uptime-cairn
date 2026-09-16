@@ -45,11 +45,23 @@ func run(args []string, stdout, stderr io.Writer) error {
 			return runImport(args[1:], stdout, stderr)
 		case "config":
 			return runConfig(args[1:], stdout, stderr)
+		case "version":
+			fmt.Fprintln(stdout, version.String())
+			return nil
 		}
 	}
 
 	fs := flag.NewFlagSet("cairn", flag.ContinueOnError)
 	fs.SetOutput(stderr)
+	fs.Usage = func() {
+		fmt.Fprintln(stderr, "usage: cairn [flags] [command]")
+		fmt.Fprintln(stderr, "\nCommands:")
+		fmt.Fprintln(stderr, "  import    import from Uptime Kuma")
+		fmt.Fprintln(stderr, "  config    inspect or validate configuration")
+		fmt.Fprintln(stderr, "  version   print version and exit")
+		fmt.Fprintln(stderr, "\nFlags:")
+		fs.PrintDefaults()
+	}
 
 	cfg := config.Default()
 	var trustedProxies string

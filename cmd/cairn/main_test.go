@@ -14,6 +14,31 @@ import (
 	_ "modernc.org/sqlite"
 )
 
+func TestVersionSubcommandMatchesFlag(t *testing.T) {
+	var commandOut, flagOut bytes.Buffer
+	if err := run([]string{"version"}, &commandOut, &bytes.Buffer{}); err != nil {
+		t.Fatalf("version subcommand: %v", err)
+	}
+	if err := run([]string{"-version"}, &flagOut, &bytes.Buffer{}); err != nil {
+		t.Fatalf("-version flag: %v", err)
+	}
+	if commandOut.String() != flagOut.String() {
+		t.Fatalf("version output differs:\nsubcommand: %q\nflag: %q", commandOut.String(), flagOut.String())
+	}
+}
+
+func TestRootHelpListsSubcommands(t *testing.T) {
+	var stderr bytes.Buffer
+	if err := run([]string{"-h"}, &bytes.Buffer{}, &stderr); err != nil {
+		t.Fatalf("help: %v", err)
+	}
+	for _, command := range []string{"import", "config", "version"} {
+		if !strings.Contains(stderr.String(), command) {
+			t.Fatalf("help does not list %q:\n%s", command, stderr.String())
+		}
+	}
+}
+
 func TestConfigValidateValidDefault(t *testing.T) {
 	var stdout, stderr bytes.Buffer
 	err := run([]string{"config", "validate"}, &stdout, &stderr)
