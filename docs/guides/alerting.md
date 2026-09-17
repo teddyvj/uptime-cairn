@@ -134,7 +134,7 @@ instance. `priority` (1–5), `tags`, and an `auth_type` of `none`, `basic`
 Register an application at [pushover.net](https://pushover.net) to obtain
 the token; the user key is on your Pushover account dashboard.
 
-Optional: `priority` (-2 to 2, default 0), `sound` (any Pushover sound name),
+Optional: `priority` (-2 to 1, default 0), `sound` (any Pushover sound name),
 `device` (to target a specific device rather than all your devices).
 
 ### Microsoft Teams

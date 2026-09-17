@@ -206,8 +206,8 @@ export const CHANNEL_TYPES: Record<string, ChannelSpec> = {
 				label: 'Priority',
 				kind: 'number',
 				min: -2,
-				max: 2,
-				hint: '-2 = lowest, 0 = normal (default), 2 = emergency.',
+				max: 1,
+				hint: '-2 = lowest, 0 = normal (default), 1 = high.',
 				advanced: true
 			},
 			{ key: 'sound', label: 'Sound', kind: 'text', advanced: true },

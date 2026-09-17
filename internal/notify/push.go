@@ -96,15 +96,20 @@ func sendPushover(ctx context.Context, s *Sender, c conf, ev Event) (Receipt, er
 		return Receipt{}, err
 	}
 
+	// Pushover limits: title is 250 characters, message is 1024 characters.
+	// truncate appends "… (truncated)" (14 bytes) when shortening, so trim
+	// under each limit to guarantee the final payload stays within Pushover's bounds.
+	title := truncate(Title(ev), 230)
+	msg := truncate(text, 1000)
+
 	form := url.Values{}
 	form.Set("token", c.str("api_token", ""))
 	form.Set("user", c.str("user_key", ""))
-	form.Set("title", truncate(Title(ev), 250))
-	form.Set("message", text)
+	form.Set("title", title)
+	form.Set("message", msg)
 
-	// priority ranges from -2 (lowest) to 2 (emergency). 0 is the neutral
-	// default. The field is omitted when the user has not configured it, but
-	// explicitly included when set so the value is not silently ignored.
+	// priority ranges from -2 (lowest) to 1 (high). 0 is Pushover's default
+	// and is omitted when unset or 0. Priority 2 (emergency) requires retry/expire.
 	if p := c.num("priority", 0); p != 0 {
 		form.Set("priority", strconv.Itoa(int(p)))
 	}
@@ -115,14 +120,24 @@ func sendPushover(ctx context.Context, s *Sender, c conf, ev Event) (Receipt, er
 		form.Set("device", device)
 	}
 
+	// The form body contains the api_token and user_key; record only the
+	// rendered message so credentials do not appear in the delivery log.
+	// Fall back to title or a placeholder so record is never empty, which
+	// would otherwise cause Sender.do to record the raw form body.
+	record := msg
+	if record == "" {
+		record = title
+	}
+	if record == "" {
+		record = "(empty message)"
+	}
+
 	encoded := []byte(form.Encode())
 	return s.do(ctx, request{
 		url:         "https://api.pushover.net/1/messages.json",
 		contentType: "application/x-www-form-urlencoded",
 		body:        encoded,
 		verifyTLS:   true,
-		// The form body contains the api_token and user_key; record only the
-		// rendered message so credentials do not appear in the delivery log.
-		record: text,
+		record:      record,
 	})
 }

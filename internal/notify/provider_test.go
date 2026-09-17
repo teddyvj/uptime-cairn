@@ -421,3 +421,41 @@ func TestRateLimitIsRetryable(t *testing.T) {
 func asProviderError(err error, target **ProviderError) bool {
 	return errors.As(err, target)
 }
+
+func TestPushoverEmptyTemplateDoesNotLeakCredentials(t *testing.T) {
+	t.Parallel()
+
+	// A template that evaluates to empty string, e.g. {{monitor.description}}
+	// when description is empty.
+	config := cfg(`{"api_token":"secret_token_123","user_key":"secret_user_456","message_template":"{{monitor.description}}"}`)
+	sender, recorded := testSender(t, http.StatusOK, `{"status":1}`)
+
+	ev := sampleEvent()
+	ev.Monitor.Description = ""
+
+	receipt, err := sender.Send(context.Background(), "pushover", config, ev)
+	if err != nil {
+		t.Fatalf("send: %v", err)
+	}
+
+	// Form body was sent to Pushover with credentials
+	got := recorded.get()
+	form, err := url.ParseQuery(got.body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if form.Get("token") != "secret_token_123" {
+		t.Errorf("token = %q, want secret_token_123", form.Get("token"))
+	}
+	if form.Get("user") != "secret_user_456" {
+		t.Errorf("user = %q, want secret_user_456", form.Get("user"))
+	}
+
+	// But receipt.Payload (which goes into delivery logs) MUST NOT contain secrets.
+	if strings.Contains(receipt.Payload, "secret_token_123") || strings.Contains(receipt.Payload, "secret_user_456") {
+		t.Fatalf("receipt.Payload leaked credentials: %q", receipt.Payload)
+	}
+	if receipt.Payload != Title(ev) {
+		t.Errorf("receipt.Payload = %q, want fallback to title %q", receipt.Payload, Title(ev))
+	}
+}

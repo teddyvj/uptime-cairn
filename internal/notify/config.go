@@ -131,10 +131,10 @@ var schemas = map[string][]field{
 	"pushover": {
 		{name: "api_token", kind: kString, required: true, secret: true, redact: true},
 		{name: "user_key", kind: kString, required: true, secret: true, redact: true},
-		// priority ranges from -2 (lowest / no notification) to 2 (emergency /
-		// requires acknowledgement). 0 is the neutral default and is sent only
-		// when explicitly set so the API's own default is not overridden silently.
-		{name: "priority", kind: kInt, min: -2, max: 2},
+		// priority ranges from -2 (lowest / silent) to 1 (high-priority / bypass
+		// quiet hours). 0 is Pushover's default and is omitted when unset or 0.
+		// Priority 2 (emergency) requires retry and expire parameters, so it is capped at 1.
+		{name: "priority", kind: kInt, min: -2, max: 1},
 		{name: "sound", kind: kString},
 		{name: "device", kind: kString},
 		{name: "message_template", kind: kString, template: true},
