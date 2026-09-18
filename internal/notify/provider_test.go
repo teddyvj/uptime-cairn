@@ -146,6 +146,17 @@ func TestProvidersDeliver(t *testing.T) {
 			},
 		},
 		{
+			channelType: "googlechat",
+			config:      cfg(`{"webhook_url":"https://chat.googleapis.com/v1/spaces/X/messages?key=k&token=t"}`),
+			check: func(t *testing.T, got sent) {
+				body := decodeBody(t, got.body)
+				text, ok := body["text"].(string)
+				if !ok || !strings.Contains(text, `[DOWN] API "edge"`) {
+					t.Errorf("text = %v", body["text"])
+				}
+			},
+		},
+		{
 			channelType: "mattermost",
 			config:      cfg(`{"webhook_url":"https://mattermost.example.com/hooks/x","channel":"town-square","username":"cairn","icon_url":"https://example.com/icon.png"}`),
 			check: func(t *testing.T, got sent) {

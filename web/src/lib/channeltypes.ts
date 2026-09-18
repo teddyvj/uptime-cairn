@@ -203,6 +203,14 @@ export const CHANNEL_TYPES: Record<string, ChannelSpec> = {
 			messageTemplate
 		]
 	},
+	googlechat: {
+		label: 'Google Chat',
+		summary: 'Post to an incoming webhook.',
+		fields: [
+			{ key: 'webhook_url', label: 'Webhook URL', kind: 'secret', required: true, secret: true },
+			messageTemplate
+		]
+	},
 	mattermost: {
 		label: 'Mattermost',
 		summary: 'Post to an incoming webhook.',

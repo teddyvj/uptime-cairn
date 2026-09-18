@@ -139,6 +139,10 @@ var schemas = map[string][]field{
 		{name: "icon_url", kind: kString, format: "uri"},
 		{name: "message_template", kind: kString, template: true},
 	},
+	"googlechat": {
+		{name: "webhook_url", kind: kString, required: true, format: "uri", secret: true, redact: true},
+		{name: "message_template", kind: kString, template: true},
+	},
 	"pagerduty": {
 		{name: "integration_key", kind: kString, required: true, secret: true, redact: true},
 		{name: "severity", kind: kString, enum: []string{"critical", "error", "warning", "info"}},

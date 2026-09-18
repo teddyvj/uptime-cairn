@@ -14,7 +14,7 @@ import (
 	"github.com/webloomlabs/uptime-cairn/internal/model"
 )
 
-// The delivery half: fourteen providers behind one function.
+// The delivery half: fifteen providers behind one function.
 //
 // Every one of them either speaks HTTP or shells out, so the shared machinery
 // here is small and the per-provider files are almost entirely the shape of
@@ -114,6 +114,7 @@ var senders = map[string]sendFunc{
 	"ntfy":       sendNtfy,
 	"msteams":    sendMSTeams,
 	"mattermost": sendMattermost,
+	"googlechat": sendGoogleChat,
 	"pagerduty":  sendPagerDuty,
 	"opsgenie":   sendOpsgenie,
 	"twilio":     sendTwilio,

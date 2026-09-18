@@ -231,3 +231,22 @@ func sendMattermost(ctx context.Context, s *Sender, c conf, ev Event) (Receipt, 
 	}
 	return s.postJSON(ctx, c.str("webhook_url", ""), body, nil)
 }
+
+// sendGoogleChat posts to a Google Chat incoming webhook. The API takes a flat
+// {"text": ...} document — no attachments, no colour — so the title and the
+// rendered message are joined into one body.
+func sendGoogleChat(ctx context.Context, s *Sender, c conf, ev Event) (Receipt, error) {
+	text, err := message(c, "message_template", ev)
+	if err != nil {
+		return Receipt{}, err
+	}
+
+	payload := map[string]any{
+		"text": Title(ev) + "\n\n" + text,
+	}
+	body, err := json.Marshal(payload)
+	if err != nil {
+		return Receipt{}, err
+	}
+	return s.postJSON(ctx, c.str("webhook_url", ""), body, nil)
+}
