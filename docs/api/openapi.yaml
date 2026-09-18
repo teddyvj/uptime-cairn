@@ -5204,6 +5204,8 @@ components:
         - ntfy
         - pushover
         - msteams
+        - mattermost
+        - googlechat
         - pagerduty
         - opsgenie
         - twilio
@@ -5266,6 +5268,8 @@ components:
         - $ref: "#/components/schemas/NtfyChannel"
         - $ref: "#/components/schemas/PushoverChannel"
         - $ref: "#/components/schemas/MsTeamsChannel"
+        - $ref: "#/components/schemas/MattermostChannel"
+        - $ref: "#/components/schemas/GoogleChatChannel"
         - $ref: "#/components/schemas/PagerDutyChannel"
         - $ref: "#/components/schemas/OpsgenieChannel"
         - $ref: "#/components/schemas/TwilioChannel"
@@ -5283,6 +5287,8 @@ components:
           ntfy: "#/components/schemas/NtfyChannel"
           pushover: "#/components/schemas/PushoverChannel"
           msteams: "#/components/schemas/MsTeamsChannel"
+          mattermost: "#/components/schemas/MattermostChannel"
+          googlechat: "#/components/schemas/GoogleChatChannel"
           pagerduty: "#/components/schemas/PagerDutyChannel"
           opsgenie: "#/components/schemas/OpsgenieChannel"
           twilio: "#/components/schemas/TwilioChannel"
@@ -5504,6 +5510,37 @@ components:
           required: [name, type, config]
           properties:
             type: { type: string, const: msteams }
+            config:
+              type: object
+              required: [webhook_url]
+              properties:
+                webhook_url: { type: string, format: uri, writeOnly: true }
+                message_template: { type: [string, "null"] }
+
+    MattermostChannel:
+      allOf:
+        - $ref: "#/components/schemas/NotificationChannelCommon"
+        - type: object
+          required: [name, type, config]
+          properties:
+            type: { type: string, const: mattermost }
+            config:
+              type: object
+              required: [webhook_url]
+              properties:
+                webhook_url: { type: string, format: uri, writeOnly: true }
+                channel: { type: [string, "null"] }
+                username: { type: [string, "null"] }
+                icon_url: { type: [string, "null"], format: uri }
+                message_template: { type: [string, "null"] }
+
+    GoogleChatChannel:
+      allOf:
+        - $ref: "#/components/schemas/NotificationChannelCommon"
+        - type: object
+          required: [name, type, config]
+          properties:
+            type: { type: string, const: googlechat }
             config:
               type: object
               required: [webhook_url]

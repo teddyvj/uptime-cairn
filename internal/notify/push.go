@@ -97,7 +97,7 @@ func sendPushover(ctx context.Context, s *Sender, c conf, ev Event) (Receipt, er
 	}
 
 	// Pushover limits: title is 250 characters, message is 1024 characters.
-	// truncate appends "… (truncated)" (14 bytes) when shortening, so trim
+	// truncate appends "… (truncated)" (15 bytes) when shortening, so trim
 	// under each limit to guarantee the final payload stays within Pushover's bounds.
 	title := truncate(Title(ev), 230)
 	msg := truncate(text, 1000)
