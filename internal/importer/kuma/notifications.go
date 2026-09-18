@@ -66,6 +66,8 @@ func mapNotification(raw string) (mappedChannel, error) {
 		return mapNtfy(cfg)
 	case "teams", "msteams":
 		return single("msteams", "webhook_url", cfg, "webhookUrl", "teamsWebhookUrl")
+	case "mattermost":
+		return single("mattermost", "webhook_url", cfg, "mattermostWebhookUrl", "webhookUrl")
 	case "googlechat", "google-chat":
 		return single("googlechat", "webhook_url", cfg, "googleChatWebhookURL", "googlechatWebhookURL", "webhookUrl")
 	case "pagerduty", "pagertree":

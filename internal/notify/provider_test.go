@@ -157,6 +157,26 @@ func TestProvidersDeliver(t *testing.T) {
 			},
 		},
 		{
+			channelType: "mattermost",
+			config:      cfg(`{"webhook_url":"https://mattermost.example.com/hooks/x","channel":"town-square","username":"cairn","icon_url":"https://example.com/icon.png"}`),
+			check: func(t *testing.T, got sent) {
+				body := decodeBody(t, got.body)
+				if body["channel"] != "town-square" {
+					t.Errorf("channel = %v", body["channel"])
+				}
+				if body["username"] != "cairn" {
+					t.Errorf("username = %v", body["username"])
+				}
+				if body["icon_url"] != "https://example.com/icon.png" {
+					t.Errorf("icon_url = %v", body["icon_url"])
+				}
+				attachments, ok := body["attachments"].([]any)
+				if !ok || len(attachments) != 1 {
+					t.Fatalf("attachments = %v", body["attachments"])
+				}
+			},
+		},
+		{
 			channelType: "telegram",
 			config:      cfg(`{"bot_token":"123:abc","chat_id":"-100","parse_mode":"HTML"}`),
 			check: func(t *testing.T, got sent) {

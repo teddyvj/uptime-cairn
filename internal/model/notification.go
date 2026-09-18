@@ -5,10 +5,10 @@ import (
 	"time"
 )
 
-// The thirteen channel types, matching notification_channels.type in the schema
+// The fifteen channel types, matching notification_channels.type in the schema
 // and NotificationChannelType in the OpenAPI spec.
 //
-// Twelve are native. apprise is the meta-provider: one dependency the operator
+// Fourteen are native. apprise is the meta-provider: one dependency the operator
 // opts into, buying roughly ninety more destinations for the cost of shelling
 // out to a binary (PHASE-1-PLAN.md §3.3).
 const (
@@ -21,11 +21,12 @@ const (
 	ChannelGotify     = "gotify"
 	ChannelNtfy       = "ntfy"
 	ChannelMSTeams    = "msteams"
+	ChannelMattermost = "mattermost"
+	ChannelGoogleChat = "googlechat"
 	ChannelPagerDuty  = "pagerduty"
 	ChannelOpsgenie   = "opsgenie"
 	ChannelTwilio     = "twilio"
 	ChannelApprise    = "apprise"
-	ChannelGoogleChat = "googlechat"
 )
 
 // EventType values, matching EventType in the spec. Only the monitor lifecycle

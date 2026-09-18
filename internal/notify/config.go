@@ -132,6 +132,13 @@ var schemas = map[string][]field{
 		{name: "webhook_url", kind: kString, required: true, format: "uri", secret: true, redact: true},
 		{name: "message_template", kind: kString, template: true},
 	},
+	"mattermost": {
+		{name: "webhook_url", kind: kString, required: true, format: "uri", secret: true, redact: true},
+		{name: "channel", kind: kString},
+		{name: "username", kind: kString},
+		{name: "icon_url", kind: kString, format: "uri"},
+		{name: "message_template", kind: kString, template: true},
+	},
 	"googlechat": {
 		{name: "webhook_url", kind: kString, required: true, format: "uri", secret: true, redact: true},
 		{name: "message_template", kind: kString, template: true},

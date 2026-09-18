@@ -1,6 +1,6 @@
 # Alerting
 
-Thirteen channel types, what each one needs, and the two things about the system
+Fifteen channel types, what each one needs, and the two things about the system
 as a whole that are worth knowing before you configure any of them.
 
 ---
@@ -131,6 +131,12 @@ instance. `priority` (1–5), `tags`, and an `auth_type` of `none`, `basic`
 ### Microsoft Teams
 
 `webhook_url` (encrypted) and an optional `message_template`.
+
+### Mattermost
+
+`webhook_url` (encrypted), with optional `channel` (channel name override, e.g.
+`town-square`), `username`, `icon_url`, and `message_template`. Notifications
+render with colour-coded attachments indicating status (`up`, `down`, `pending`).
 
 ### Google Chat
 
